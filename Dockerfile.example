@@ -1,0 +1,28 @@
+# Dockerfile.example — Shows how to integrate the MCP Shell Server into your project.
+# Copy the relevant sections into your existing Dockerfile.
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# ── Your existing dependencies ──────────────────────────────────────────────
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# ── MCP Shell Server dependencies (add to your requirements.txt instead) ────
+# mcp>=1.0
+# uvicorn>=0.30
+RUN pip install --no-cache-dir "mcp>=1.0" "uvicorn>=0.30"
+
+# ── Copy project files ───────────────────────────────────────────────────────
+COPY . .
+
+# ── Make start script executable ────────────────────────────────────────────
+RUN chmod +x /app/start.sh
+
+# ── Expose ports ─────────────────────────────────────────────────────────────
+# Add 8765 alongside your existing ports
+EXPOSE 8765   # MCP Shell Server
+# EXPOSE 8888 # your app port, e.g. Jupyter
+
+CMD ["/app/start.sh"]

@@ -1,0 +1,9 @@
+version: "3"
+agent:
+  authtoken: YOUR_NGROK_AUTHTOKEN   # https://dashboard.ngrok.com/authtokens
+tunnels:
+  mcp-shell:
+    proto: http
+    addr: 8765                                      # MCP server port — do not change
+    domain: YOUR_STATIC_DOMAIN.ngrok-free.dev       # https://dashboard.ngrok.com/domains
+    host_header: rewrite                            # required — prevents "Invalid Host header"
