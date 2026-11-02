@@ -183,10 +183,13 @@ That's it. Claude now has a `run_command` tool that executes directly inside you
 
 ## Security Considerations
 
-- **Your ngrok URL gives shell access to your container.** Treat it like a private API key — do not share it publicly.
-- The MCP server runs inside Docker, so it can only access what you explicitly mount into the container.
+> ⚠️ **This server has no authentication.** `run_command` runs arbitrary shell commands, and the only thing protecting the endpoint is that your ngrok URL stays secret. Anyone who gets that URL can execute commands inside your container.
+
+- Treat the ngrok URL like a root password: never commit it, paste it in screenshots or share it publicly.
+- The MCP server runs inside Docker, so it can only reach what you explicitly mount into the container. Avoid mounting sensitive folders, and remember that any secret passed to the container (environment variables, mounted files) is readable through `run_command`.
+- Add protection in front of the endpoint: restrict access by IP in the ngrok dashboard (Endpoints → your domain → IP Restrictions) and, if your MCP client supports it, add ngrok authentication (for example basic auth or OAuth) via a traffic policy.
+- Intended for personal development machines. Do not use it on shared or production hosts.
 - ngrok free plan: 1 static domain, 1 concurrent session, 20k requests/month — generous for dev use.
-- For extra security, add IP restrictions in the ngrok dashboard (Endpoints → your domain → IP Restrictions).
 
 ---
 
